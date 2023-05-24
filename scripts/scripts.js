@@ -1,4 +1,3 @@
-// Obtener referencias a los elementos del DOM
 let botonEncriptar = document.querySelector("#boton-encriptar");
 let botonDesencriptar = document.querySelector("#boton-desencriptar");
 let inputTexto = document.querySelector("textarea");
@@ -10,53 +9,55 @@ function encriptar(mensaje) {
   for (const element of mensaje) {
     let caracter = element;
     if (caracter >= "a" && caracter <= "z") {
-      let indice = (caracter.charCodeAt(0) - 97 + 10) % 26; // Obtener el índice en el rango de 0 a 25
-      let caracterEncriptado = String.fromCharCode(indice + 97); // Convertir el índice a código ASCII y obtener el caracter encriptado
+      let indice = (caracter.charCodeAt(0) - 97 + 10) % 26; 
+      let caracterEncriptado = String.fromCharCode(indice + 97); 
       mensajeEncriptado += caracterEncriptado;
     } else {
-      mensajeEncriptado += caracter; // Mantener los caracteres no encriptados
+      mensajeEncriptado += caracter; 
     }
   }
   return mensajeEncriptado;
 }
 
-// Función de desencriptado
 function desencriptar(mensajeEncriptado) {
   let mensajeDesencriptado = "";
   for (const element of mensajeEncriptado) {
     let caracter = element;
     if (caracter >= "a" && caracter <= "z") {
-      let indice = (caracter.charCodeAt(0) - 97 - 10 + 26) % 26; // Obtener el índice en el rango de 0 a 25
-      let caracterDesencriptado = String.fromCharCode(indice + 97); // Convertir el índice a código ASCII y obtener el caracter desencriptado
+      let indice = (caracter.charCodeAt(0) - 97 - 10 + 26) % 26; 
+      let caracterDesencriptado = String.fromCharCode(indice + 97); 
       mensajeDesencriptado += caracterDesencriptado;
     } else {
-      mensajeDesencriptado += caracter; // Mantener los caracteres no encriptados
+      mensajeDesencriptado += caracter; 
     }
   }
   return mensajeDesencriptado;
 }
 
-// Manejador de evento para el botón de encriptar
 botonEncriptar.addEventListener("click", () => {
   let mensaje = inputTexto.value;
   let mensajeEncriptado = encriptar(mensaje);
   parrafoAside.innerHTML = `<p>${mensajeEncriptado}</p>
-                            <button id="boton-copiar">Copiar</button>`;
+                            <button id="boton-copiar-encriptado">Copiar</button>`;
 
-  let botonCopiar = document.querySelector("#boton-copiar");
-  botonCopiar.addEventListener("click", () => {
+  let botonCopiarEncriptado = document.querySelector("#boton-copiar-encriptado");
+  botonCopiarEncriptado.addEventListener("click", () => {
     copiarTexto(mensajeEncriptado);
   });
 });
 
-// Manejador de evento para el botón de desencriptar
 botonDesencriptar.addEventListener("click", () => {
-  let mensajeEncriptado = parrafoAside.textContent.trim();
+  let mensajeEncriptado = inputTexto.value;
   let mensajeDesencriptado = desencriptar(mensajeEncriptado);
-  inputTexto.value = mensajeDesencriptado;
+  parrafoAside.innerHTML = `<p>${mensajeDesencriptado}</p>
+                            <button id="boton-copiar-desencriptado">Copiar</button>`;
+
+  let botonCopiarDesencriptado = document.querySelector("#boton-copiar-desencriptado");
+  botonCopiarDesencriptado.addEventListener("click", () => {
+    copiarTexto(mensajeDesencriptado);
+  });
 });
 
-// Función para copiar texto al portapapeles
 function copiarTexto(texto) {
   let elementoTemporal = document.createElement("textarea");
   elementoTemporal.value = texto;
@@ -67,4 +68,5 @@ function copiarTexto(texto) {
   elementoTemporal.focus();
   elementoTemporal.select();
   document.execCommand("copy");
-  document.body.removeChild}
+  document.body.removeChild(elementoTemporal);
+}
